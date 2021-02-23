@@ -1,0 +1,13 @@
+@model IEnumerable<Room>
+<ul class="navbar-nav flex-grow-1">
+  @foreach (var item in Model)
+  {
+
+    <li class="nav-item">
+      <a class="nav-link text-dark" asp-controller="Home" asp-action="GetRoom" asp-route-id="@item.Id">@item.RoomName</a>
+    </li>
+  }
+  <li class="nav-item">
+    <button id="AddRoom" class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Oda Ekle</button>
+  </li>
+</ul>

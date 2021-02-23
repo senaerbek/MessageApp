@@ -1,0 +1,31 @@
+
+<form class="formLoginRegister" asp-controller="Auth" asp-action="Register">
+  <div class="imgcontainer">
+   <!-- <img src="img_avatar2.png" alt="Avatar" class="avatar">-->
+  </div>
+
+  <div class="container">
+    <label for="uname"><b>Kullanıcı Adı</b></label>
+    <input class="inputLoginRegister" type="text" placeholder="Kullanıcı Adı" name="uName" required>
+
+    <label for="psw"><b>Şifre</b></label>
+    <input class="inputLoginRegister"  type="password" placeholder="Şifre" name="password" required>
+        
+    <button class="buttonLoginRegister" type="submit">Kayıt Ol</button>
+   
+  </div>
+
+
+</form>
+
+
+<div style="text-align: right;">
+    <form asp-controller="Auth" asp-action="FacebookLogin">
+     
+        <button type="submit">Facebook İle Devam Et<img src="https://img.icons8.com/doodle/48/000000/facebook-new.png"/></button>        
+    </form>
+</div>
+
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/tr_TR/sdk.js#xfbml=1&version=v9.0&appId=264444181950345&autoLogAppEvents=1" nonce="BftFpSpg"></script>

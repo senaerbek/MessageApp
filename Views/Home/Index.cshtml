@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Room>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <div class="row" >
+
+
+    @foreach (var item in Model)
+    {
+
+<div class="col-md-4">
+  <a class="nav-link text-dark" asp-controller="Home" asp-action="GetRoom" asp-route-id="@item.Id">
+
+            <div class="container">
+                <h4><b>Oda</b></h4>
+                <p>@item.RoomName</p>
+            </div>
+
+        </a>
+</div>
+  
+    }
+    </div>
+</div>

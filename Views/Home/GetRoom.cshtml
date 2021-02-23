@@ -1,0 +1,86 @@
+﻿@model Room
+
+
+       <div class="mBody">
+      @foreach (var item in Model.Message)
+{
+    <div class="message" >
+
+            <header style="color: #E1FFE1;" >@item.Name: </header>
+            <div style="color: #369F36;" >@item.MessageContent</div>
+            <div style="color: #6e6e6e;">@item.Date</div>
+
+        </div>
+}
+    </div>
+    <div class="text-center">
+        <div class="mInput">
+            <form onsubmit="sendMessage(event)" asp-controller="Home" asp-action="SendMessage"  >
+                <input style="margin-top:10px; width:500px" type="text" name="message"/>
+                <input  type="hidden" name="RoomName" value="@Model.RoomName"/>
+                <input type="hidden" name="RoomId" value="@Model.Id" />
+            <button>gönder</button>
+            </form>
+            
+        </div>
+    </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aspnet-signalr/1.1.0/signalr.min.js" integrity="sha512-E/B12dRMxuUIEgssVZzB2+TUMmQbH8wun+rkw/xZgIwZ8lcdmJU71oj1dX4zO7A7jp/+11m+8YuhX/qqLQBdJg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+<script>
+ var _connId = ""
+        var conn = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+        conn.on("RecieveMessage", function(data){
+            console.log(data)
+    
+            var message = document.createElement("div");
+            message.classList.add("message");
+            
+
+            var header = document.createElement("header")
+            header.appendChild(document.createTextNode(data.name));
+            header.style.color="#E1FFE1"
+            var p = document.createElement("p")
+            p.appendChild(document.createTextNode(data.messageContent));
+            p.style.color="#369F36"
+            var footer = document.createElement("footer")
+            footer.style.color="#6e6e6e"
+            footer.appendChild(document.createTextNode(new Date(data.date).toLocaleString()));
+
+            message.appendChild(header);
+            message.appendChild(p);
+            message.appendChild(footer);
+
+            document.querySelector(".mBody").append(message);
+        });
+           
+            var join = function(){
+            axios.post("/Chat/Join/"+_connId+"/@Model.RoomName", null)
+            .then(response => console.log("katıldı", response))
+            .catch(error => console.log("olmadı" , error));
+        }
+    
+     conn.start().then(function(){
+                conn.invoke("connId")
+                .then(function(connId){
+                    _connId = connId
+                    join();
+                })
+        }).catch(function(){
+
+        });
+
+        
+
+  var sendMessage= function(e){
+            e.preventDefault();
+           console.log("adssdf");
+           
+           var data = new FormData(e.target);
+            axios.post("/Chat/SendMessage", data)
+            .then(res=>{
+                console.log("gönderildi");
+            })
+            .catch(err=>{console.err(err)});
+        }
+</script>
